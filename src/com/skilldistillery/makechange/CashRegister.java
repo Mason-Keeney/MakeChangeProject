@@ -60,7 +60,7 @@ public class CashRegister {
 		String answer = input(isRunning);
 
 		if (answer.equals("y")) {
-			System.out.println("Thank you!");
+			System.out.println("Thank you!\n");
 
 		} else {
 			System.out.println("Have a wonderful day!");
