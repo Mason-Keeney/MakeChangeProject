@@ -3,8 +3,7 @@ package com.skilldistillery.makechange;
 import java.util.Scanner;
 
 public class CashRegister {
-	
-	
+
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		boolean isRunning = true;
@@ -12,6 +11,7 @@ public class CashRegister {
 		while (isRunning) {
 
 			double payment, price;
+			
 			System.out.print("Please enter the price of the item: ");
 			price = sc.nextDouble();
 
@@ -27,7 +27,9 @@ public class CashRegister {
 				int[] coins = coinsCalc(price, payment, bTotal);
 				int cTotal = (coins[0] * 25) + (coins[1] * 10) + (coins[2] * 5) + (coins[3] * 1);
 
-				if (bTotal > 0 || cTotal > 0) {
+				if (bTotal == 0 && cTotal == 0) {
+					continue;
+				} else if (bTotal > 0 || cTotal > 0) {
 
 					print(bills, coins);
 				}
@@ -37,6 +39,8 @@ public class CashRegister {
 				String againLow = again.toLowerCase();
 
 				if (againLow.equals("y")) {
+					System.out.println("Thank you! Please feel free to continue shopping.");
+				} else {
 					isRunning = false;
 				}
 
@@ -44,7 +48,9 @@ public class CashRegister {
 
 		}
 
-		sc.close();
+		if(!isRunning) {
+			sc.close();
+		}
 	}
 
 	public static int[] billsCalc(double price, double payment) {
@@ -60,7 +66,7 @@ public class CashRegister {
 			deciVal = (diff - diffInt) * 100;
 			deciInt = (int) deciVal;
 			System.out.println("Insufficient Payment\nPlease provide an additional $" + diffInt + "." + deciInt);
-			
+			collectPayment(true);
 		} else if (diff < 0) {
 			int after20, find10 = 0, remain10 = 0, after10 = 0, find5 = 0, remain5 = 0, after5 = 0, find1;
 			double diffAbs = diff * -1; // change to positive
@@ -228,7 +234,25 @@ public class CashRegister {
 			}
 		}
 
-		System.out.println("\nWill that be all? (Y/N)");
+		System.out.println("\nWould you like to continue shopping? (Y/N)");
 
+	}
+
+	public static void collectPayment(boolean isRunning) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Would you like to pay this additional amount now, and continue shopping? (Y/N)");
+		String answer = sc.next();
+		String answerLow = answer.toLowerCase();
+
+		if (answerLow.equals("y")) {
+			System.out.println("Thank you!");
+		} else if (answerLow.equals("n")) {
+			System.out.println("I appreciate your patronage, have a wonderful day.");
+			System.exit(0);
+		}
+
+		if(!isRunning) {
+			sc.close();
+		}
 	}
 }
