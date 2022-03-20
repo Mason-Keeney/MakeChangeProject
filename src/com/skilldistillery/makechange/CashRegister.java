@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class CashRegister {
 
 	public static void main(String[] args) {
-
+		Scanner sc = new Scanner(System.in);
 		boolean isRunning = true;
 		double price, payment;
 		String[] changeLabel = { "Hundred", "Fift", "Twent", "Ten", "Five", "Dollar", "quarter", "dime", "nickel",
@@ -15,9 +15,9 @@ public class CashRegister {
 			
 //			USER INPUT
 			System.out.print("Please enter the price of the item: ");
-			price = Double.parseDouble(input(isRunning));
+			price = Double.parseDouble(input(sc));
 			System.out.print("Payment: ");
-			payment = Double.parseDouble(input(isRunning));
+			payment = Double.parseDouble(input(sc));
 
 //			MATH
 			double remainder = (price - payment) * -1;
@@ -27,7 +27,7 @@ public class CashRegister {
 //			IF NO CHANGE
 			if (remainder == 0) {
 				System.out.println("No change is due");
-				isRunning = keepShop(isRunning);
+				isRunning = keepShop(sc);
 				continue;
 			}
 
@@ -35,7 +35,7 @@ public class CashRegister {
 			if (remainder < 0) {
 				System.out.print("Insufficient Payment\nPlease pay an additional ");
 				dAndC((diff * -1), (coinVal * -1));
-				isRunning = keepShop(isRunning);
+				isRunning = keepShop(sc);
 				continue;
 			}
 
@@ -49,15 +49,19 @@ public class CashRegister {
 			}
 			System.out.print("and totals ");
 			dAndC(diff, coinVal);
-			isRunning = keepShop(isRunning);
+			isRunning = keepShop(sc);
 		}
 		
+		if(!isRunning) {
+			sc.close();
+		}
 
 	}
 // keepShop uses input to decide if the program keeps running
-	public static boolean keepShop(boolean isRunning) {
+	public static boolean keepShop(Scanner sc) {
+		boolean isRunning = true;
 		System.out.println("Would you like to continue shopping with us? (Y/N)");
-		String answer = input(isRunning);
+		String answer = input(sc);
 
 		if (answer.equals("y")) {
 			System.out.println("Thank you!\n");
@@ -65,24 +69,18 @@ public class CashRegister {
 		} else {
 			System.out.println("Have a wonderful day!");
 			isRunning = false;
-			input(isRunning);
 
 		}
 		return isRunning;
 	}
 	
 // input takes input, converts it to lowercase and returns it as a string	
-	public static String input(boolean isRunning) {
-		Scanner sc = new Scanner(System.in);
+	public static String input(Scanner sc) {
 		String input, inputLow = "";
-		if (isRunning) {
+			
 			input = sc.nextLine();
 			inputLow = input.toLowerCase();
-		}
-		if (!isRunning) {
-			sc.close();
-		}
-	
+			
 		return inputLow;
 	
 	}
@@ -97,14 +95,12 @@ public class CashRegister {
 				change[i] = diff / mod[i];
 				diff = diff % mod[i];
 			}
-	//		BILLS END
 	
 	//		COINS
 			for (int i = 6; i < change.length; i++) {
 				change[i] = coinVal / mod[i];
 				coinVal = coinVal % mod[i];
 			}
-	//		COINS END
 	
 			return change;
 		}
