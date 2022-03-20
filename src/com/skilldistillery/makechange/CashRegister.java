@@ -15,9 +15,10 @@ public class CashRegister {
 			
 //			USER INPUT
 			System.out.print("Please enter the price of the item: ");
-			price = Double.parseDouble(input(sc));
+			price = sc.nextDouble();
 			System.out.print("Payment: ");
-			payment = Double.parseDouble(input(sc));
+			payment = sc.nextDouble();
+			sc.nextLine();
 
 //			MATH
 			double remainder = (price - payment) * -1;
@@ -61,7 +62,8 @@ public class CashRegister {
 	public static boolean keepShop(Scanner sc) {
 		boolean isRunning = true;
 		System.out.println("Would you like to continue shopping with us? (Y/N)");
-		String answer = input(sc);
+		String in = sc.nextLine();
+		String answer = in.toLowerCase();
 
 		if (answer.equals("y")) {
 			System.out.println("Thank you!\n");
@@ -72,17 +74,6 @@ public class CashRegister {
 
 		}
 		return isRunning;
-	}
-	
-// input takes input, converts it to lowercase and returns it as a string	
-	public static String input(Scanner sc) {
-		String input, inputLow = "";
-			
-			input = sc.nextLine();
-			inputLow = input.toLowerCase();
-			
-		return inputLow;
-	
 	}
 	
 //	assignVal uses two integers to assign values to an int[] using the appropriate math
