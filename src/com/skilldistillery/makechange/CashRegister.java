@@ -34,13 +34,13 @@ public class CashRegister {
 //			IF MORE IS OWED			
 			if (remainder < 0) {
 				System.out.print("Insufficient Payment\nPlease pay an additional ");
-				dAndC(diff, (coinVal * -1));
+				dAndC((diff * -1), (coinVal * -1));
 				isRunning = keepShop(isRunning);
 				continue;
 			}
 
 //			IF CHANGE IS OWED			
-			int[] change = assignVal(price, payment);
+			int[] change = assignVal(diff, coinVal);
 			System.out.print("Your change is ");
 			for (int i = 0; i < change.length; i++) {
 				if (change[i] > 0) {
@@ -88,14 +88,9 @@ public class CashRegister {
 	}
 	
 //	assignVal uses two integers to assign values to an int[] using the appropriate math
-	public static int[] assignVal(double price, double payment) {
+	public static int[] assignVal(int diff, int coinVal) {
 			int[] change = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
-			int[] mod = { 100, 50, 20, 10, 5, 1, 25, 10, 5, 1 };
-	
-	//		MATH			
-			double remainder = (price - payment) * -1;
-			int diff = (int) ((price - payment) * -1);
-			int coinVal = (int) Math.round((remainder - diff) * 100);
+			int[] mod = { 100, 50, 20, 10, 5, 1, 25, 10, 5, 1 };		
 			
 	//		BILLS
 			for (int i = 0; i < 6; i++) {
