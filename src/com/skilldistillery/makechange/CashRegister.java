@@ -22,8 +22,8 @@ public class CashRegister {
 
 //			MATH
 			double remainder = (price - payment) * -1;
-			int diff = (int) ((price - payment) * -1);
-			int coinVal = (int) Math.round((remainder - diff) * 100);
+			int difference = (int) ((price - payment) * -1);
+			int coinValue = (int) Math.round((remainder - difference) * 100);
 
 //			IF NO CHANGE
 			if (remainder == 0) {
@@ -35,13 +35,13 @@ public class CashRegister {
 //			IF MORE IS OWED			
 			if (remainder < 0) {
 				System.out.print("Insufficient Payment\nPlease pay an additional ");
-				dAndC((diff * -1), (coinVal * -1));
+				printChangeTotal((difference * -1), (coinValue * -1));
 				isRunning = keepShop(sc);
 				continue;
 			}
 
 //			IF CHANGE IS OWED			
-			int[] change = assignVal(diff, coinVal);
+			int[] change = assignVal(difference, coinValue);
 			System.out.print("Your change is ");
 			for (int i = 0; i < change.length; i++) {
 				if (change[i] > 0) {
@@ -49,7 +49,7 @@ public class CashRegister {
 				}
 			}
 			System.out.print("and totals ");
-			dAndC(diff, coinVal);
+			printChangeTotal(difference, coinValue);
 			isRunning = keepShop(sc);
 		}
 		
@@ -77,45 +77,46 @@ public class CashRegister {
 	}
 	
 //	assignVal uses two integers to assign values to an int[] using the appropriate math
-	public static int[] assignVal(int diff, int coinVal) {
+	public static int[] assignVal(int difference, int coinValue) {
 			int[] change = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 			int[] mod = { 100, 50, 20, 10, 5, 1, 25, 10, 5, 1 };		
 			
 	//		BILLS
 			for (int i = 0; i < 6; i++) {
-				change[i] = diff / mod[i];
-				diff = diff % mod[i];
+				change[i] = difference / mod[i];
+				difference = difference % mod[i];
 			}
 	
 	//		COINS
 			for (int i = 6; i < change.length; i++) {
-				change[i] = coinVal / mod[i];
-				coinVal = coinVal % mod[i];
+				change[i] = coinValue / mod[i];
+				coinValue = coinValue % mod[i];
 			}
 	
 			return change;
 		}
 	
 //	dAndC prints the dollar(s) and cent(s) lines (its a bulky if tree,)
-	public static void dAndC(int diff, int coinVal) {
-		if (diff > 0) {
-			System.out.print(diff + " dollar");
-			if (diff > 1) {
+	public static void printChangeTotal(int difference, int coinValue) {
+		if (difference > 0) {
+			System.out.print(difference + " dollar");
+			if (difference > 1) {
 				System.out.print("s and ");
 			} else {
 				System.out.print(" and ");
 			}
 		}
-		System.out.println(coinVal + " cents.");
+		System.out.println(coinValue + " cents.");
 	}
 	
 //	printChange does as it says, adds plurality as needed.
-	public static void printChange(int quantity, String denom) {
-	
-		System.out.print(quantity + " " + denom);
-		if ((denom.equals("penn") || denom.equals("Twent") || denom.equals("Fift")) && quantity > 1) {
+	public static void printChange(int quantity, String denomination) {
+		boolean needsAltPlurality = denomination.equals("penn") || denomination.equals("Twent") || denomination.equals("Fift");
+		
+		System.out.print(quantity + " " + denomination);
+		if (needsAltPlurality && quantity > 1) {
 			System.out.print("ies ");
-		} else if (denom.equals("penn") || denom.equals("Twent") || denom.equals("Fift")) {
+		} else if (needsAltPlurality) {
 			System.out.print("y ");
 		} else if (quantity > 1) {
 			System.out.print("s ");
